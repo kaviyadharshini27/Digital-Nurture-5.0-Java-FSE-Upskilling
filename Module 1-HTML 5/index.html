@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Neighborly · Community Event Hub</title>
+    <!-- Google Fonts & external CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation (Semantic) -->
+    <nav class="main-nav" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="logo">Neighborly</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-item">Home</a></li>
+                <li><a href="#events" class="nav-item">Events</a></li>
+                <li><a href="#contact" class="nav-item">Contact</a></li>
+                <li><a href="help.html" target="_blank" class="nav-item help-link">Help</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Welcome Banner (ID + internal styling) -->
+    <div id="welcomeBanner" class="welcome-banner">
+        <h1>Welcome back, Kaviya!</h1>
+        <p>Discover local events, meet friends, and build community</p>
+        <!-- inline style demo for special offer span -->
+        <p><span style="color: #d9381e; font-weight: bold; background: #fff2e6; padding: 0.2rem 0.6rem; border-radius: 40px;">Limited offer:</span> First event registration gets a free coffee coupon!</p>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home section -->
+        <section id="home" class="section-card">
+            <h2>Your local connection</h2>
+            <p>Join neighbors for workshops, festivals, and volunteer days. Explore our events, register with ease, and stay tuned.</p>
+            <button id="findNearbyBtn" class="btn-primary">Find nearby events</button>
+            <div id="geoOutput" class="geo-message"></div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="section-card">
+            <h2>Upcoming community events</h2>
+            <div class="event-filters">
+                <label for="eventFilterSelect">Filter by category: </label>
+                <select id="eventFilterSelect">
+                    <option value="all">All events</option>
+                    <option value="Music">Music</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Food">Food</option>
+                    <option value="Volunteer">Volunteer</option>
+                </select>
+                <input type="text" id="quickSearchInput" placeholder="Type to search events..." class="search-input">
+            </div>
+            <div id="eventGallery" class="event-grid">
+                <!-- JS will inject event cards dynamically -->
+            </div>
+        </section>
+
+        <!-- Registration Form -->
+        <section id="registerSection" class="section-card form-card">
+            <h2>Register for an event</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>Full name *</label>
+                    <input type="text" id="regName" placeholder="e.g., Kaviya" required autofocus value="Kaviya">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="regEmail" placeholder="kaviya@example.com" required value="kaviya@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Event date</label>
+                    <input type="date" id="regDate">
+                </div>
+                <div class="form-group">
+                    <label>Select event *</label>
+                    <select id="regEventSelect" required>
+                        <option value="">-- Choose an event --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message / special requests</label>
+                    <textarea id="regMessage" rows="2" placeholder="Dietary restrictions, accessibility needs..."></textarea>
+                </div>
+                <!-- Phone field with blur validation -->
+                <div class="form-group">
+                    <label>Phone (for updates)</label>
+                    <input type="tel" id="phoneNumber" placeholder="e.g., 1234567892" value="1234567892">
+                    <small id="phoneError" class="error-msg"></small>
+                </div>
+
+                <!-- Event fee preview from dropdown (onchange) -->
+                <div class="fee-preview"> <span id="eventFeeDisplay">Select event to see fee</span></div>
+
+                <button type="submit" id="submitRegBtn" class="btn-primary">Register now</button>
+                <output id="formOutputMessage" class="output-message"></output>
+            </form>
+            <!-- Clear preferences button -->
+            <button id="clearPrefsBtn" class="btn-outline">Clear my saved preferences</button>
+            <div id="storageInfo" class="storage-note"></div>
+        </section>
+
+        <!-- Image Gallery -->
+        <section class="section-card">
+            <h2>Past event memories</h2>
+            <table class="gallery-table">
+                <tr>
+                    <td><img src="https://picsum.photos/id/29/300/180?grayscale" alt="Community garden workshop" title="Garden workshop - Spring 2024" class="gallery-img"><div class="img-caption">Garden harvest day</div></td>
+                    <td><img src="https://picsum.photos/id/96/300/180" alt="Live music festival" title="Summer music block party" class="gallery-img"><div class="img-caption">Music on Main Street</div></td>
+                    <td><img src="https://picsum.photos/id/169/300/180" alt="Volunteers cleaning park" title="Park cleanup crew" class="gallery-img"><div class="img-caption">Volunteer heroes</div></td>
+                </tr>
+                <tr>
+                    <td><img src="https://picsum.photos/id/264/300/180" alt="Cooking workshop" title="Pasta masterclass" class="gallery-img"><div class="img-caption">Cooking workshop</div></td>
+                    <td><img src="https://picsum.photos/id/206/300/180" alt="Pet adoption event" title="Adopt a furry friend" class="gallery-img"><div class="img-caption">Pet adoption day</div></td>
+                    <td><img src="https://picsum.photos/id/42/300/180" alt="Yoga in the park" title="Morning yoga session" class="gallery-img"><div class="img-caption">Yoga and mindfulness</div></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Video Invite - YouTube Embed -->
+        <section class="section-card">
+            <h2>Event promo: why you should join</h2>
+            <div class="video-container">
+                <iframe id="promoVideo" width="100%" height="400" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=test123" title="Community Event Promo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <p id="videoStatusMsg" class="video-status">Video ready to play</p>
+        </section>
+
+        <!-- Feedback & Event Handling -->
+        <section class="section-card">
+            <h2>Real-time event feedback</h2>
+            <div class="feedback-area">
+                <label>Share your thoughts about the event portal:</label>
+                <textarea id="feedbackText" rows="3" placeholder="Your feedback makes us better..."></textarea>
+                <div id="charCount" class="char-counter">0 / 200 characters</div>
+                <div class="demo-images">
+                    <p><strong>Double-click any image below to enlarge it:</strong></p>
+                    <img src="https://picsum.photos/id/13/150/100" alt="demo enlarge" class="enlarge-img" id="demoImg1">
+                    <img src="https://picsum.photos/id/26/150/100" alt="demo enlarge" class="enlarge-img" id="demoImg2">
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-card">
+            <h2>Contact the community team</h2>
+            <p>Email: kaviya@gmail.com &nbsp;|&nbsp; Hotline: 1234567892</p>
+            <p>123 Main Street, Community Hall, Room 4</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p> 2025 Neighborly — built for local connections</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Neighborly · Community Event Hub | Bootstrap 5 Edition</title>
+
+    <!-- Bootstrap 5 CSS + Icons + Google Fonts (Human friendly coding style) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <!-- custom override styles (keep bootstrap spirit but add flavor) -->
+    <style>
+      * {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      body {
+        background: #f8fafc;
+        scroll-behavior: smooth;
+      }
+      /* navbar brand + custom */
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.7rem;
+        letter-spacing: -0.3px;
+        background: linear-gradient(135deg, #1e6f3f, #2b8c4a);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .bg-soft-primary {
+        background-color: #eef2ff;
+      }
+      .card-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 1rem 2rem rgba(0,0,0,0.08) !important;
+      }
+      .welcome-banner-custom {
+        background: linear-gradient(105deg, #d9f0e6 0%, #c0e0d0 100%);
+        border-radius: 2rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      .event-grid-custom {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .gallery-img-custom {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 1rem;
+        transition: transform 0.2s;
+        cursor: pointer;
+      }
+      .gallery-img-custom:hover {
+        transform: scale(1.02);
+      }
+      .img-caption {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+        text-align: center;
+        color: #2c3e2f;
+      }
+      .btn-outline-accent {
+        border: 1px solid #2b8c4a;
+        color: #2b8c4a;
+      }
+      .btn-outline-accent:hover {
+        background: #2b8c4a;
+        color: white;
+      }
+      .footer-clean {
+        background: #1e2a32;
+        color: #cddfe7;
+      }
+      .geo-message {
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        color: #0c6b3f;
+      }
+      .error-msg {
+        color: #d9534f;
+        font-size: 0.75rem;
+      }
+      .fee-preview {
+        background: #e9ecef;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.9rem;
+      }
+      .video-container iframe {
+        border-radius: 1.5rem;
+      }
+      .enlarge-img {
+        cursor: zoom-in;
+        transition: all 0.2s;
+        border-radius: 1rem;
+        width: 100px;
+        margin-right: 1rem;
+      }
+      @media (max-width: 768px) {
+        .welcome-banner-custom h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="pt-0">
+
+    <!-- ========== BOOTSTRAP NAVBAR (responsive, flex, toggler) ========== -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm" aria-label="Main navigation">
+      <div class="container">
+        <span class="navbar-brand"><i class="bi bi-people-fill me-2 text-success"></i>Neighborly</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#neighborNavbar" aria-controls="neighborNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="neighborNavbar">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
+            <li class="nav-item"><a class="nav-link fw-semibold" href="#home"><i class="bi bi-house-door me-1"></i>Home</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="#events"><i class="bi bi-calendar-event me-1"></i>Events</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="#contact"><i class="bi bi-envelope-paper me-1"></i>Contact</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="#" id="helpModalBtn" data-bs-toggle="modal" data-bs-target="#helpModal"><i class="bi bi-question-circle me-1"></i>Help</a></li>
+          </ul>
+          <form class="d-flex ms-lg-3 mt-2 mt-lg-0" role="search">
+            <input class="form-control form-control-sm me-2" type="search" placeholder="Search events..." id="globalSearchNav" aria-label="Search">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <!-- Welcome Banner (Bootstrap grid + custom) -->
+      <div class="welcome-banner-custom shadow-sm" id="welcomeBanner">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h1 class="display-5 fw-bold">Welcome back, Kaviya!</h1>
+            <p class="lead">Discover local events, meet friends, and build community</p>
+            <p><span class="badge bg-danger bg-opacity-75 p-2"><i class="bi bi-gift-fill me-1"></i> Limited offer:</span> <span class="fw-semibold">First event registration gets a free coffee coupon!</span></p>
+          </div>
+          <div class="col-md-4 text-center d-none d-md-block">
+            <i class="bi bi-emoji-sunglasses fs-1 text-success"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Home section - flex utilities -->
+      <section id="home" class="card border-0 shadow-sm p-4 mb-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h2 class="h3 fw-bold"><i class="bi bi-geo-alt-fill text-success me-2"></i>Your local connection</h2>
+            <p class="text-secondary">Join neighbors for workshops, festivals, and volunteer days. Explore our events, register with ease, and stay tuned.</p>
+          </div>
+          <button id="findNearbyBtn" class="btn btn-success btn-lg shadow-sm mt-3 mt-md-0"><i class="bi bi-geo-alt me-2"></i>Find nearby events</button>
+        </div>
+        <div id="geoOutput" class="geo-message mt-3"></div>
+      </section>
+
+      <!-- EVENTS SECTION with Bootstrap row + columns responsive (grid exercise) -->
+      <section id="events" class="mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+          <h2 class="h2 fw-semibold"><i class="bi bi-calendar2-week me-2 text-success"></i>Upcoming community events</h2>
+          <div class="d-flex gap-2 mt-2 mt-sm-0">
+            <select id="eventFilterSelect" class="form-select w-auto">
+              <option value="all">All events</option>
+              <option value="Music">Music 🎵</option>
+              <option value="Workshop">Workshop 🛠️</option>
+              <option value="Food">Food 🍕</option>
+              <option value="Volunteer">Volunteer 🌱</option>
+            </select>
+            <input type="text" id="quickSearchInput" placeholder="Search..." class="form-control" style="max-width: 200px;">
+          </div>
+        </div>
+        <!-- dynamic event grid will be injected here (row + cols) -->
+        <div id="eventGallery" class="event-grid-custom"></div>
+      </section>
+
+      <!-- REGISTRATION FORM (Bootstrap forms, floating & validation) -->
+      <section id="registerSection" class="card border-0 shadow-lg p-4 mb-5 bg-white">
+        <h2 class="h3 mb-3"><i class="bi bi-pencil-square me-2 text-success"></i>Register for an event</h2>
+        <form id="registrationForm" class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Full name *</label>
+              <input type="text" id="regName" class="form-control" value="Kaviya" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Email *</label>
+              <input type="email" id="regEmail" class="form-control" value="kaviya@gmail.com" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Event date</label>
+              <input type="date" id="regDate" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Select event *</label>
+              <select id="regEventSelect" class="form-select" required>
+                <option value="">-- Choose an event --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Phone (for updates)</label>
+              <input type="tel" id="phoneNumber" class="form-control" value="1234567892">
+              <div id="phoneError" class="invalid-feedback d-block"></div>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Message / special requests</label>
+              <textarea id="regMessage" rows="2" class="form-control" placeholder="Dietary restrictions, accessibility needs..."></textarea>
+            </div>
+            <div class="col-12">
+              <div class="fee-preview bg-light p-2 rounded"><i class="bi bi-currency-dollar"></i> <span id="eventFeeDisplay">Select event to see fee</span></div>
+            </div>
+            <div class="col-12 d-flex gap-3 flex-wrap">
+              <button type="submit" id="submitRegBtn" class="btn btn-success px-4"><i class="bi bi-check2-circle me-1"></i>Register now</button>
+              <button type="button" id="clearPrefsBtn" class="btn btn-outline-secondary"><i class="bi bi-eraser me-1"></i>Clear saved preferences</button>
+            </div>
+            <output id="formOutputMessage" class="text-success mt-2 fw-semibold"></output>
+            <div id="storageInfo" class="small text-muted"></div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Image Gallery (Bootstrap grid example + rounded/borders) -->
+      <section class="card border-0 shadow-sm p-4 mb-5">
+        <h2 class="h3 mb-4"><i class="bi bi-images me-2 text-success"></i>Past event memories</h2>
+        <div class="row g-4">
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/29/400/240?grayscale" class="gallery-img-custom w-100 shadow-sm border border-2 border-white" alt="Garden workshop">
+            <div class="img-caption">🌱 Garden harvest day</div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/96/400/240" class="gallery-img-custom w-100" alt="Music festival">
+            <div class="img-caption">🎵 Music on Main Street</div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/169/400/240" class="gallery-img-custom w-100" alt="Volunteers">
+            <div class="img-caption">🧹 Volunteer heroes</div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/264/400/240" class="gallery-img-custom w-100" alt="Cooking workshop">
+            <div class="img-caption">🍝 Cooking workshop</div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/206/400/240" class="gallery-img-custom w-100" alt="Pet adoption">
+            <div class="img-caption">🐾 Pet adoption day</div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <img src="https://picsum.photos/id/42/400/240" class="gallery-img-custom w-100" alt="Yoga">
+            <div class="img-caption">🧘 Yoga and mindfulness</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video + feedback section (accordion with JS plugin? but using Bootstrap classes) -->
+      <section class="card border-0 shadow-sm p-4 mb-5">
+        <h2 class="h3"><i class="bi bi-play-circle me-2 text-success"></i>Event promo: why you should join</h2>
+        <div class="ratio ratio-16x9 mt-3 mb-2">
+          <iframe id="promoVideo" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=test" title="Community Event Promo" allowfullscreen></iframe>
+        </div>
+        <p id="videoStatusMsg" class="text-muted small mt-2"><i class="bi bi-info-circle"></i> Video ready to play</p>
+      </section>
+
+      <!-- feedback & double-click enlarge images using bootstrap spacing -->
+      <section class="card border-0 shadow-sm p-4 mb-5">
+        <h2><i class="bi bi-chat-dots me-2 text-success"></i>Real-time event feedback</h2>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Share your thoughts about the event portal:</label>
+          <textarea id="feedbackText" rows="3" class="form-control" placeholder="Your feedback makes us better..."></textarea>
+          <div id="charCount" class="form-text text-end">0 / 200 characters</div>
+        </div>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <strong>Double-click any image below to enlarge it:</strong>
+          <img src="https://picsum.photos/id/13/150/100" class="enlarge-img shadow-sm" id="demoImg1" alt="enlarge1">
+          <img src="https://picsum.photos/id/26/150/100" class="enlarge-img shadow-sm" id="demoImg2" alt="enlarge2">
+        </div>
+      </section>
+
+      <!-- Contact Section with bg-light -->
+      <section id="contact" class="bg-light p-4 rounded-4 mb-5">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h2 class="h4 fw-bold"><i class="bi bi-envelope-at-fill me-2 text-success"></i>Contact the community team</h2>
+            <p class="mb-1"><i class="bi bi-envelope"></i> kaviya@gmail.com &nbsp;|&nbsp; <i class="bi bi-telephone"></i> 1234567892</p>
+            <p><i class="bi bi-geo-alt"></i> 123 Main Street, Community Hall, Room 4</p>
+          </div>
+          <div class="col-md-4 text-md-end">
+            <i class="bi bi-people fs-1 text-secondary opacity-50"></i>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer with Bootstrap Icons and utilities -->
+    <footer class="footer-clean text-center py-4 mt-4">
+      <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+          <span>© 2025 Neighborly — built for local connections &nbsp;<i class="bi bi-suit-heart-fill text-danger"></i></span>
+          <div class="mt-2 mt-md-0">
+            <a href="#" class="text-white-50 me-3" data-bs-toggle="modal" data-bs-target="#helpModal"><i class="bi bi-question-circle"></i> Help</a>
+            <a href="#" class="text-white-50"><i class="bi bi-github"></i> Community</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- HELP MODAL (Bootstrap JS plugin: modal) -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="helpModalLabel"><i class="bi bi-life-preserver"></i> Neighborly Help Center</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>How to register?</strong> Fill the registration form, choose an event, and click register. Your preferences are saved locally.</p>
+            <p><strong>Find events near you</strong> click "Find nearby events" to see geolocation demo.</p>
+            <p class="mb-0">📧 Contact support: community@neighborly.com</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // ---------- DATA ----------
+      const eventsData = [
+        { id: 1, name: "Jazz in the Garden", category: "Music", fee: 12, date: "2025-06-10", description: "Smooth tunes & local food" },
+        { id: 2, name: "Web Design Workshop", category: "Workshop", fee: 5, date: "2025-06-15", description: "Learn modern CSS" },
+        { id: 3, name: "Community Potluck", category: "Food", fee: 0, date: "2025-06-20", description: "Bring a dish to share" },
+        { id: 4, name: "Park Cleanup Day", category: "Volunteer", fee: 0, date: "2025-06-25", description: "Help keep nature green" },
+        { id: 5, name: "Acoustic Night", category: "Music", fee: 8, date: "2025-07-01", description: "Local artists" },
+        { id: 6, name: "Yoga & Mindfulness", category: "Workshop", fee: 10, date: "2025-07-05", description: "Relax & recharge" }
+      ];
+      
+      let currentFilter = "all";
+      let currentSearch = "";
+      
+      function renderEvents() {
+        let filtered = eventsData.filter(ev => currentFilter === "all" ? true : ev.category === currentFilter);
+        if (currentSearch.trim() !== "") {
+          filtered = filtered.filter(ev => ev.name.toLowerCase().includes(currentSearch.toLowerCase()) || ev.category.toLowerCase().includes(currentSearch.toLowerCase()));
+        }
+        const container = document.getElementById("eventGallery");
+        if (!container) return;
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="alert alert-warning w-100">No matching events found 🙁</div>`;
+        } else {
+          container.innerHTML = filtered.map(ev => `
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <div class="card-body">
+                <div class="d-flex justify-content-between"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">${ev.category}</span><small class="text-muted"><i class="bi bi-cash-stack"></i> $${ev.fee}</small></div>
+                <h5 class="card-title mt-2 fw-bold">${ev.name}</h5>
+                <p class="card-text small">${ev.description}</p>
+                <p class="card-text"><i class="bi bi-calendar"></i> ${new Date(ev.date).toDateString()}</p>
+                <button class="btn btn-sm btn-outline-success quickRegisterBtn" data-event-name="${ev.name}" data-event-fee="${ev.fee}"><i class="bi bi-ticket-perforated"></i> Register now</button>
+              </div>
+            </div>
+          `).join('');
+          // attach quick register buttons
+          document.querySelectorAll('.quickRegisterBtn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const name = btn.getAttribute('data-event-name');
+              const fee = btn.getAttribute('data-event-fee');
+              const selectEl = document.getElementById("regEventSelect");
+              if(selectEl) {
+                for(let i=0; i<selectEl.options.length; i++) {
+                  if(selectEl.options[i].text === name) { selectEl.selectedIndex = i; break; }
+                }
+                selectEl.dispatchEvent(new Event('change'));
+              }
+              document.getElementById("registerSection").scrollIntoView({ behavior: 'smooth' });
+            });
+          });
+        }
+      }
+      
+      function populateEventSelect() {
+        const select = document.getElementById("regEventSelect");
+        if(select) {
+          select.innerHTML = '<option value="">-- Choose an event --</option>' + eventsData.map(ev => `<option value="${ev.id}" data-fee="${ev.fee}">${ev.name} ($${ev.fee})</option>`).join('');
+          select.addEventListener('change', function() {
+            const selectedOption = select.options[select.selectedIndex];
+            const fee = selectedOption ? selectedOption.getAttribute('data-fee') : null;
+            document.getElementById("eventFeeDisplay").innerText = fee !== null ? `Event fee: $${fee}` : "Select event to see fee";
+          });
+        }
+      }
+      
+      // local storage for preferences
+      function loadPreferences() {
+        const savedName = localStorage.getItem("neighborly_name");
+        const savedEmail = localStorage.getItem("neighborly_email");
+        const savedPhone = localStorage.getItem("neighborly_phone");
+        if(savedName) document.getElementById("regName").value = savedName;
+        if(savedEmail) document.getElementById("regEmail").value = savedEmail;
+        if(savedPhone) document.getElementById("phoneNumber").value = savedPhone;
+        const infoDiv = document.getElementById("storageInfo");
+        if(infoDiv) infoDiv.innerText = savedName ? "✅ Saved preferences loaded" : "No saved preferences yet";
+      }
+      
+      document.getElementById("clearPrefsBtn")?.addEventListener("click", () => {
+        localStorage.removeItem("neighborly_name");
+        localStorage.removeItem("neighborly_email");
+        localStorage.removeItem("neighborly_phone");
+        document.getElementById("regName").value = "Kaviya";
+        document.getElementById("regEmail").value = "kaviya@gmail.com";
+        document.getElementById("phoneNumber").value = "1234567892";
+        document.getElementById("storageInfo").innerText = "Preferences cleared";
+        setTimeout(() => { if(document.getElementById("storageInfo")) document.getElementById("storageInfo").innerText = ""; }, 2000);
+      });
+      
+      // phone validation
+      function validatePhone() { 
+        const phone = document.getElementById("phoneNumber").value;
+        const errorSpan = document.getElementById("phoneError");
+        if(phone && !/^\d{10}$/.test(phone)) {
+          errorSpan.innerText = "Phone must be exactly 10 digits";
+          return false;
+        } else { errorSpan.innerText = ""; return true; }
+      }
+      
+      document.getElementById("phoneNumber")?.addEventListener("blur", validatePhone);
+      
+      // registration form
+      document.getElementById("registrationForm")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if(!validatePhone()) return;
+        const name = document.getElementById("regName").value.trim();
+        const email = document.getElementById("regEmail").value.trim();
+        const selectedEventId = document.getElementById("regEventSelect").value;
+        if(!name || !email || !selectedEventId) {
+          document.getElementById("formOutputMessage").innerText = "❌ Please fill name, email and select an event!";
+          return;
+        }
+        localStorage.setItem("neighborly_name", name);
+        localStorage.setItem("neighborly_email", email);
+        localStorage.setItem("neighborly_phone", document.getElementById("phoneNumber").value);
+        document.getElementById("formOutputMessage").innerHTML = "🎉 Registration successful! Check your email for details.";
+        setTimeout(() => { document.getElementById("formOutputMessage").innerText = ""; }, 3000);
+      });
+      
+      // Geolocation demo
+      document.getElementById("findNearbyBtn")?.addEventListener("click", () => {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(pos => {
+            document.getElementById("geoOutput").innerHTML = `📍 Found location: Lat ${pos.coords.latitude.toFixed(2)}, Long ${pos.coords.longitude.toFixed(2)} — Nearby community center within 2km!`;
+          }, () => { document.getElementById("geoOutput").innerHTML = "⚠️ Geolocation not allowed. Enable to see nearby events."; });
+        } else { document.getElementById("geoOutput").innerHTML = "Geolocation not supported."; }
+      });
+      
+      // filter & search events
+      document.getElementById("eventFilterSelect")?.addEventListener("change", (e) => { currentFilter = e.target.value; renderEvents(); });
+      document.getElementById("quickSearchInput")?.addEventListener("input", (e) => { currentSearch = e.target.value; renderEvents(); });
+      document.getElementById("globalSearchNav")?.addEventListener("input", (e) => { 
+        currentSearch = e.target.value; 
+        if(document.getElementById("quickSearchInput")) document.getElementById("quickSearchInput").value = currentSearch;
+        renderEvents(); 
+      });
+      
+      // feedback char count
+      const feedbackText = document.getElementById("feedbackText");
+      const charCountSpan = document.getElementById("charCount");
+      if(feedbackText) {
+        feedbackText.addEventListener("input", () => {
+          let len = feedbackText.value.length;
+          charCountSpan.innerText = `${len} / 200 characters`;
+          if(len > 200) { feedbackText.value = feedbackText.value.slice(0,200); charCountSpan.innerText = "200 / 200 characters (max reached)"; }
+        });
+      }
+      
+      // enlarge image double-click
+      const enlargeImgs = document.querySelectorAll(".enlarge-img, .gallery-img-custom");
+      document.querySelectorAll(".enlarge-img").forEach(img => {
+        img.addEventListener("dblclick", () => { window.open(img.src, '_blank'); });
+      });
+      document.querySelectorAll(".gallery-img-custom").forEach(img => {
+        img.addEventListener("dblclick", () => { window.open(img.src, '_blank'); });
+      });
+      
+      // initialize event select dropdown and render
+      populateEventSelect();
+      renderEvents();
+      loadPreferences();
+      
+      // video status
+      const videoIframe = document.getElementById("promoVideo");
+      if(videoIframe) {
+        videoIframe.addEventListener("play", () => { document.getElementById("videoStatusMsg").innerHTML = "🎬 Enjoy the community vibe!"; });
+      }
+      
+      // Bootstrap tooltip optional not needed, but modal already works
+    </script>
+  </body>
+</html>
